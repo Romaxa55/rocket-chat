@@ -18,6 +18,7 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker $(whoami)
 rm get-docker.sh
+git clone https://github.com/Romaxa55/rocket-chat.git
 docker --version
 
 # Устанавливаем Docker Compose
@@ -25,3 +26,4 @@ curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-comp
 chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
+
