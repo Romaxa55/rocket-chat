@@ -1,17 +1,23 @@
 #!/bin/bash
 
+# Проверка, что скрипт запущен от пользователя с правами суперпользователя
+if [[ $EUID -ne 0 ]]; then
+   echo "Этот скрипт должен быть запущен от пользователя с правами суперпользователя (root)."
+   exit 1
+fi
+
 # Обновляем и улучшаем систему
-sudo apt-get update && sudo apt-get upgrade -y
+apt-get update && apt-get upgrade -y
 
 # Устанавливаем Git
-sudo apt-get install git -y
+apt-get install git -y
 
 # Устанавливаем Docker
 curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $(whoami)
-sudo rm get-docker.sh
+sh get-docker.sh
+usermod -aG docker $(whoami)
+rm get-docker.sh
 
 # Устанавливаем Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/download/2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose

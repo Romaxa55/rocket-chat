@@ -1,1 +1,1 @@
-curl -fsSL <URL-TO-SCRIPT> | bash
+curl -fsSL https://github.com/Romaxa55/rocket-chat/blob/master/install.sh | bash
