@@ -8,7 +8,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Проверка на установку Docker
-if ! command -v docker &> /dev/null; then
+if type docker >/dev/null 2>&1; then
     # Устанавливаем Docker
     curl -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
@@ -17,7 +17,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Проверка на установку Docker Compose
-if ! command -v docker-compose &> /dev/null; then
+if [ ! -f "/usr/local/bin/docker-compose" ]; then
     # Устанавливаем Docker Compose
     curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
