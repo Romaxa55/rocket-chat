@@ -7,24 +7,34 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Обновляем и улучшаем систему
-apt-get update && apt-get upgrade -y
+# Проверка на установку Docker
+if ! command -v docker &> /dev/null; then
+    # Устанавливаем Docker
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+    usermod -aG docker $(whoami)
+    rm get-docker.sh
+fi
 
-# Устанавливаем Git
-apt-get install git curl sudo -y
+# Проверка на установку Docker Compose
+if ! command -v docker-compose &> /dev/null; then
+    # Устанавливаем Docker Compose
+    curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+fi
 
-# Устанавливаем Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
-usermod -aG docker $(whoami)
-rm get-docker.sh
-git clone https://github.com/Romaxa55/rocket-chat.git
+# Проверка на установку Git, curl и sudo
+if ! command -v git &> /dev/null || ! command -v curl &> /dev/null || ! command -v sudo &> /dev/null; then
+    apt-get update
+    apt-get install git curl sudo -y
+fi
+
+# Клонирование репозитория Rocket.Chat
+if [ ! -d "rocket-chat" ]; then
+    git clone https://github.com/Romaxa55/rocket-chat.git
+fi
+
 docker --version
-
-# Устанавливаем Docker Compose
-curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-
 docker-compose --version
 
 docker-compose -f rocket-chat/traefik.yml up -d
