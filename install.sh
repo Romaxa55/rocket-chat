@@ -24,10 +24,13 @@ if ! command -v docker-compose &> /dev/null; then
 fi
 
 # Проверка на установку Git, curl и sudo
-if ! command -v git &> /dev/null || ! command -v curl &> /dev/null || ! command -v sudo &> /dev/null; then
-    apt-get update
-    apt-get install git curl sudo -y
-fi
+packages=("git" "curl" "sudo")
+for package in "${packages[@]}"; do
+    if ! dpkg -s "$package" >/dev/null 2>&1; then
+        apt-get update
+        apt-get install "$package" -y
+    fi
+done
 
 # Клонирование репозитория Rocket.Chat
 if [ ! -d "rocket-chat" ]; then
