@@ -10,7 +10,7 @@ fi
 apt-get update && apt-get upgrade -y
 
 # Устанавливаем Git
-apt-get install git -y
+apt-get install git curl sudo -y
 
 # Устанавливаем Docker
 curl -fsSL https://get.docker.com -o get-docker.sh
