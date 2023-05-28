@@ -27,4 +27,3 @@ chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
 
-docker-compose -f rocket-chat/traefik.yml up -d
